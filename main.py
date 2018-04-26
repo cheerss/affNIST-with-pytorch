@@ -24,13 +24,21 @@ def main():
     #    all_train_labels = all_train_labels.cuda()
 
     for i in range(iterations):
-        images, labels = read_data.read_data_from_file(i % 32, batch_size, train=True, one_of_n=False )
+        if i % 80 == 0:
+            all_train_images = torch.Tensor(read_data.read_images(int(i/100%32) * all_trains, all_trains, train=True))
+            all_train_labels = torch.LongTensor(read_data.read_labels(int(i/100%32) * all_trains, all_trains, train=True, one_of_n=False))
+            if gpu:
+                all_train_images = all_train_images.cuda()
+                all_train_labels = all_train_labels.cuda()
 
-        images = torch.autograd.Variable(torch.Tensor(images))
-        labels = torch.autograd.Variable(torch.LongTensor(labels))
+        # images, labels = read_data.read_data_from_file(i % 32, batch_size, train=True, one_of_n=False )
+        indexs = torch.randperm(all_trains)
+        indexs = indexs[:batch_size]
         if gpu:
-            images = images.cuda()
-            labels = labels.cuda()
+            indexs = indexs.cuda()
+
+        images = torch.autograd.Variable(all_train_images[indexs])
+        labels = torch.autograd.Variable(all_train_labels[indexs])
         # print(images.shape)
         # print(labels.shape)
 

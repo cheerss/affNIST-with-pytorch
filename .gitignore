@@ -2,3 +2,4 @@ __pycache__/
 test_batches/
 training_and_validation_batches/
 *.zip
+*.pyc
