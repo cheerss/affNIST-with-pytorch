@@ -4,7 +4,7 @@ import cnn
 import read_data
 import time
 
-iterations = 2000
+iterations = 2
 batch_size = 1000
 all_trains = 60000
 all_tests = 10000
@@ -14,10 +14,11 @@ gpu = True
 def main():
     # net = fnn.FNN()
     net = cnn.CNN()
+    flat = False
     print(net)
     start = time.time()
     for count in range(32):
-        all_train_images = torch.Tensor(read_data.read_images(count * all_trains, all_trains, train=True, flat=False))
+        all_train_images = torch.Tensor(read_data.read_images(count * all_trains, all_trains, train=True, flat=flat))
 
         all_train_labels = torch.LongTensor(read_data.read_labels(count * all_trains, all_trains, train=True, one_of_n=False))
         print(all_train_images.shape)
@@ -70,7 +71,7 @@ def main():
 
     train_error_rate = 0
     for i in range(32):
-        all_train_images = torch.Tensor(read_data.read_images(i * all_trains, all_trains, train=True))
+        all_train_images = torch.Tensor(read_data.read_images(i * all_trains, all_trains, train=True, flat=flat))
         all_train_labels = torch.LongTensor(read_data.read_labels(i * all_trains, all_trains, train=True, one_of_n=False))
         if gpu:
             all_train_images = all_train_images.cuda()
@@ -85,7 +86,7 @@ def main():
     test_error_rate = 0
     for i in range(32):
         all_test_images = torch.Tensor(read_data.read_images(i * 10000, 10000, train=False))
-        all_test_labels = torch.LongTensor(read_data.read_labels(i * 10000, 10000, train=False, one_of_n=False))
+        all_test_labels = torch.LongTensor(read_data.read_labels(i * 10000, 10000, train=False, one_of_n=False, flat=flat))
         if gpu:
             all_test_images = all_test_images.cuda()
             all_test_labels = all_test_labels.cuda()

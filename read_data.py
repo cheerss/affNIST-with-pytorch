@@ -16,7 +16,7 @@ def read_images(start, num, train=True, flat=True):
     res = data[0][0][:, from_index: from_index+num].transpose()
     if not flat:
         res = res.reshape((-1, 1, image_height, image_width))
-    return res.transpose()
+    return res
 
 def read_labels(start, num, train=True, one_of_n=True):
     if train:
