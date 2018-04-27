@@ -21,5 +21,3 @@ class FNN(nn.Module):
             num_features *= s
         return num_features
 
-
-
