@@ -17,7 +17,7 @@ def main():
     print(net)
     start = time.time()
     for count in range(32):
-        all_train_images = torch.Tensor(read_data.read_data(count * all_trains, all_trains, train=True))
+        all_train_images = torch.Tensor(read_data.read_images(count * all_trains, all_trains, train=True, flat=False))
 
         all_train_labels = torch.LongTensor(read_data.read_labels(count * all_trains, all_trains, train=True, one_of_n=False))
         print(all_train_images.shape)
@@ -70,7 +70,7 @@ def main():
 
     train_error_rate = 0
     for i in range(32):
-        all_train_images = torch.Tensor(read_data.read_data(i * all_trains, all_trains, train=True))
+        all_train_images = torch.Tensor(read_data.read_images(i * all_trains, all_trains, train=True))
         all_train_labels = torch.LongTensor(read_data.read_labels(i * all_trains, all_trains, train=True, one_of_n=False))
         if gpu:
             all_train_images = all_train_images.cuda()
@@ -84,7 +84,7 @@ def main():
 
     test_error_rate = 0
     for i in range(32):
-        all_test_images = torch.Tensor(read_data.read_data(i * 10000, 10000, train=False))
+        all_test_images = torch.Tensor(read_data.read_images(i * 10000, 10000, train=False))
         all_test_labels = torch.LongTensor(read_data.read_labels(i * 10000, 10000, train=False, one_of_n=False))
         if gpu:
             all_test_images = all_test_images.cuda()

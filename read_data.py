@@ -1,6 +1,9 @@
 import scipy.io
 
-def read_data(start, num, train=True):
+image_height = 40
+image_width = 40
+
+def read_images(start, num, train=True, flat=True):
     if train:
         file_index = int(start / 60000) + 1
         from_index = start % 60000
@@ -10,7 +13,9 @@ def read_data(start, num, train=True):
         from_index = start % 10000
         data = scipy.io.loadmat("test_batches/" + str(file_index) + ".mat")
     data = data.get("affNISTdata")["image"]
-    res = data[0][0][:, from_index: from_index+num]
+    res = data[0][0][:, from_index: from_index+num].transpose()
+    if not flat:
+        res = res.reshape((-1, 1, image_height, image_width))
     return res.transpose()
 
 def read_labels(start, num, train=True, one_of_n=True):
@@ -31,8 +36,8 @@ def read_labels(start, num, train=True, one_of_n=True):
 
 
 if __name__ == "__main__":
-    train_data = read_data(0, 100)
-    test_data = read_data(0, 100, train=False)
+    train_data = read_images(0, 100)
+    test_data = read_images(0, 100, train=False)
 
     train_labels = read_labels(0, 100)
     test_labels = read_labels(0, 100, train=False, one_of_n=False)
