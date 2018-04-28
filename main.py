@@ -4,7 +4,7 @@ import cnn
 import read_data
 import time
 
-iterations = 2
+iterations = 2000
 batch_size = 1000
 all_trains = 60000
 all_tests = 10000
@@ -12,9 +12,9 @@ learning_rate = 0.008
 gpu = True
 
 def main():
-    # net = fnn.FNN()
-    net = cnn.CNN()
-    flat = False
+    net = fnn.FNN()
+    # net = cnn.CNN()
+    flat = True
     print(net)
     start = time.time()
     for count in range(32):
@@ -85,8 +85,8 @@ def main():
 
     test_error_rate = 0
     for i in range(32):
-        all_test_images = torch.Tensor(read_data.read_images(i * 10000, 10000, train=False))
-        all_test_labels = torch.LongTensor(read_data.read_labels(i * 10000, 10000, train=False, one_of_n=False, flat=flat))
+        all_test_images = torch.Tensor(read_data.read_images(i * 10000, 10000, train=False, flat=flat))
+        all_test_labels = torch.LongTensor(read_data.read_labels(i * 10000, 10000, train=False, one_of_n=False))
         if gpu:
             all_test_images = all_test_images.cuda()
             all_test_labels = all_test_labels.cuda()
